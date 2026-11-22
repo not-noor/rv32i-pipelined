@@ -1,0 +1,10 @@
+*.vvp
+*.vcd
+*.wdb
+*.jou
+*.log
+.Xil/
+vivado_*.backup.jou
+vivado_*.str
+vivado/
+build/

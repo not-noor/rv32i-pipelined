@@ -1,0 +1,16 @@
+rtl/n_bit_reg.sv
+rtl/program_counter.sv
+rtl/inst_mem.sv
+rtl/reg_file.sv
+rtl/imm_gen.sv
+rtl/alu.sv
+rtl/branch_comp.sv
+rtl/mem_alignment.sv
+rtl/data_mem.sv
+rtl/main_control.sv
+rtl/alu_control.sv
+rtl/forwarding_unit.sv
+rtl/hazard_controller.sv
+rtl/control_unit.sv
+rtl/data_path.sv
+rtl/rv32i_top.sv
