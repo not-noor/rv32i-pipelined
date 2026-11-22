@@ -65,19 +65,6 @@ instructions become bubbles. `mem_wb_reg` is never cleared, because the branch
 or jump itself must complete (JAL/JALR write their link register). A branch
 that is not taken costs nothing.
 
-## Repository layout
-
-```
-rtl/             processor RTL (files.f lists the compile order)
-tb/              unit and system testbenches
-programs/        test programs: assembly (.s) and assembled (.hex)
-docs/            micro-architecture diagram
-tools/           asm2hex.py (assembler wrapper), iss.py (reference model)
-machine.hex      main test program (programs/hazard_test.hex)
-run_tests.sh     runs all testbenches with Icarus Verilog
-create_project.tcl, add_waves.tcl   Vivado project and waveform setup
-```
-
 ## Testbenches
 
 | Testbench | What it checks |
@@ -92,40 +79,3 @@ create_project.tcl, add_waves.tcl   Vivado project and waveform setup
 Expected values were generated with `tools/iss.py`, a small instruction-level
 RV32I simulator that runs a `.hex` program and prints the final registers and
 memory.
-
-## Running
-
-With Icarus Verilog (11 or newer):
-
-```sh
-./run_tests.sh
-```
-
-This runs every testbench in `build/` and prints PASS/FAIL for each.
-
-In Vivado (tested with 2022.2), from the Tcl console:
-
-```
-source /path/to/rv32i-pipelined/create_project.tcl
-```
-
-Then run **Run Simulation > Run Behavioral Simulation**; `rv32i_top_tb` is the
-default top. To run another testbench, right-click it under
-**Simulation Sources > sim_1** and choose **Set as Top**. After the simulation
-opens, `source add_waves.tcl` adds the stage, forwarding and flush signals to
-the waveform. The script copies the `.hex` programs into the simulator's run
-directory; if a simulation reports a program was not loaded, copy
-`machine.hex` and `programs/*.hex` there again.
-
-To change a program, edit the `.s` file and reassemble it (needs the RISC-V
-GNU binutils, `riscv64-unknown-elf-as`):
-
-```sh
-python3 tools/asm2hex.py programs/hazard_test.s programs/hazard_test.hex
-```
-
-## Limitations
-
-- The load-use hazard is handled in software; there is no stall logic.
-- Branches resolve in MEM, so a taken branch costs 3 cycles.
-- No CSRs, `ecall`/`ebreak`/`fence`, traps or interrupts.
